@@ -1,4 +1,7 @@
 class TabSwitcher
+  configDefaults:
+    timeout: 1000
+
   @find: (event) ->
     $pane = event.targetView().closest('.pane')
     data = $pane.data('tab-switcher')
@@ -15,7 +18,7 @@ class TabSwitcher
 
   itemActivated: (item) ->
     @timeouts += 1
-    setTimeout((=> @timeout(item)), 1000)
+    setTimeout((=> @timeout(item)), atom.config.get('tab-switcher.timeout'))
 
   timeout: (item) ->
     return if @timeouts == 0
