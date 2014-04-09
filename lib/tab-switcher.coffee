@@ -1,4 +1,14 @@
 class TabSwitcher
+  @find: (event) ->
+    $pane = event.targetView().closest('.pane')
+    data = $pane.data('tab-switcher')
+
+    unless data?
+      data = new TabSwitcher($pane.data('view'))
+      $pane.data('tab-switcher', data)
+
+    data
+
   constructor: (@paneView) ->
     @pane = @paneView.model
     @timeouts = 0
@@ -13,14 +23,6 @@ class TabSwitcher
     @timeouts -= 1
     if @timeouts == 0
       @pane.moveItem(item, 0)
-
-TabSwitcher.find = (event) ->
-  $pane = event.targetView().closest('.pane')
-  data = $pane.data('tab-switcher')
-  if data is undefined
-    data = new TabSwitcher($pane.data('view'))
-    $pane.data('tab-switcher', data)
-  data
 
 module.exports =
   activate: (state) ->
